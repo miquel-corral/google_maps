@@ -35,7 +35,7 @@
 
         'latitude':  41.3850639,
         'longitude': 2.1734034,
-        'url': 'https://raw.githubusercontent.com/martgnz/bcn-geodata/master/districtes/districtes_geo.json'
+        'url': 'https://raw.githubusercontent.com/miquel-corral/google_maps/master/js/districtesBCN.json'
 
 
     };
@@ -44,7 +44,7 @@
 
     // map initialization
     function initialize() {
-        // Create the Google Map
+        // Create the Google Map. TODO: Styling using Leaflet
         var myLatlng = new google.maps.LatLng( myLocation.latitude, myLocation.longitude );
         var mapOptions = {
           zoom: 12,
@@ -54,9 +54,17 @@
         map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
 
-        // OK!! map.data.loadGeoJson('https://storage.googleapis.com/maps-devrel/google.json');
-
         map.data.loadGeoJson(myLocation.url);
+
+        map.data.addListener('mouseover', function(event) {
+            map.data.revertStyle();
+            map.data.overrideStyle(event.feature, {strokeWeight: 8});
+        });
+
+        map.data.addListener('mouseout', function(event) {
+            map.data.revertStyle();
+        });
+
 
 
     } // initialize
